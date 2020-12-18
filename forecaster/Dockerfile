@@ -11,7 +11,6 @@ RUN mkdir /app
 COPY app/*.py /app/
 WORKDIR /app
 
-EXPOSE 6001
+EXPOSE 9501
 
 CMD ["python3", "forecaster_service.py"]
-

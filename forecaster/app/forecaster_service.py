@@ -30,12 +30,17 @@ def get_zambretti_forecast_api():
     answer = {}
 
     pressure = int(request.args.get('pressure', None))
-    month = int(request.args.get('month', None))
-    wind_dir = int(request.args.get('wind_dir', None))
+    month_id = int(request.args.get('month_id', None))
+    wind_deg = int(request.args.get('wind_deg', None))
     trend = int(request.args.get('trend', None))
 
-    zambretti_code = zambretti.calc_zambretti_code(pressure, month, wind_dir, trend)
+    zambretti_code = zambretti.calc_zambretti_code(pressure, month_id, wind_deg, trend)
     zambretti_text = zambretti.calc_zambretti_text(zambretti_code)
+
+    answer['pressure'] = pressure
+    answer['month_id'] = month_id
+    answer['wind_deg'] = wind_deg
+    answer['trend'] = trend
 
     answer['zambretti_code'] = zambretti_code
     answer['zambretti_text_english'] = zambretti_text
@@ -46,4 +51,4 @@ def get_zambretti_forecast_api():
 
 
 if __name__== '__main__':
-    app.run(port=6000)
+    app.run(host='0.0.0.0', port=9501)

@@ -51,6 +51,7 @@ def wind_deg_to_quadrant_api():
 
     wind_quadrant = met_funcs.wind_deg_to_quadrant(wind_deg)
 
+    answer['wind_deg'] = wind_deg
     answer['wind_quadrant'] = wind_quadrant
 
     response = jsonify(answer)
