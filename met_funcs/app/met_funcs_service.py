@@ -35,6 +35,8 @@ def get_wind_rose_api():
 
     wind_rose_id, wind_rose = windrose.get_wind_rose(wind_deg)
 
+    # Put in the calling parameters to aid debugging
+    answer['wind_deg'] = wind_deg
     answer['wind_rose_id'] = wind_rose_id
     answer['wind_rose'] = wind_rose
 
@@ -51,7 +53,9 @@ def wind_deg_to_quadrant_api():
 
     wind_quadrant = met_funcs.wind_deg_to_quadrant(wind_deg)
 
+    # Put in the calling parameters to aid debugging
     answer['wind_deg'] = wind_deg
+
     answer['wind_quadrant'] = wind_quadrant
 
     response = jsonify(answer)

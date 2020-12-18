@@ -15,6 +15,7 @@ def error_handling(error):
     response = jsonify(answer, 500)
     return response
 
+
 # an endpoint that can be polled with little overhead
 @app.route('/status')
 def status():
@@ -37,6 +38,7 @@ def get_zambretti_forecast_api():
     zambretti_code = zambretti.calc_zambretti_code(pressure, month_id, wind_deg, trend)
     zambretti_text = zambretti.calc_zambretti_text(zambretti_code)
 
+    # Put in the calling parameters to aid debugging
     answer['pressure'] = pressure
     answer['month_id'] = month_id
     answer['wind_deg'] = wind_deg
