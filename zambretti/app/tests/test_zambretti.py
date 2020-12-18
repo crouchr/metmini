@@ -28,6 +28,8 @@ def test_calc_zambretti_cod(zambretti_letter, expected_zambretti_text):
     [
         (1000, 12, 0, 0, 'Showery, bright intervals'),
         (1000, 12, 1, 2, 'Fairly fine, possible showers early'),
+        (1000, 12, 15, 2, 'Fairly fine, possible showers early'),
+        (1000, 12, 15, 2, 'Fairly fine, possible showers early'),
     ]
 )
 def test_calc_zambretti_code(pressure, month, wind_dir, trend, expected_zambretti_text):
