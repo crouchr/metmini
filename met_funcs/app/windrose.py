@@ -25,7 +25,7 @@ def get_rose_point(i):
 def get_wind_rose(wind_deg):
     """
 
-    :param wind_dir: 0 to 360 degrees
+    :param wind_deg: 0 to 360 degrees
     :return: Wind rose as in N, NNW etc.
     """
 

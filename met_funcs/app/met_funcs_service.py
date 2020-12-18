@@ -27,13 +27,13 @@ def status():
     return response
 
 
-@app.route('/get_wind_rose')
+@app.route('/wind_deg_to_wind_rose')
 def get_wind_rose_api():
     answer = {}
 
-    wind_dir = int(request.args.get('wind_dir', None))
+    wind_deg = int(request.args.get('wind_deg', None))
 
-    wind_rose_id, wind_rose = windrose.get_wind_rose(wind_dir)
+    wind_rose_id, wind_rose = windrose.get_wind_rose(wind_deg)
 
     answer['wind_rose_id'] = wind_rose_id
     answer['wind_rose'] = wind_rose
