@@ -20,19 +20,27 @@ def test_calc_zambretti_cod(zambretti_letter, expected_zambretti_text):
     assert zambretti_text == expected_zambretti_text
 
 
-# trend = hPA / hour
-# wind_dir - is it a quadrant ?
 # test against : http://www.beteljuice.co.uk/zambretti/forecast.html
 @pytest.mark.parametrize(
     "pressure, month, wind_dir, trend, expected_zambretti_text",
     [
         (1000, 12, 0, 0, 'Showery, bright intervals'),
-        (1000, 12, 1, 2, 'Fairly fine, possible showers early'),
-        (1000, 12, 15, 2, 'Fairly fine, possible showers early'),
-        (1000, 12, 15, 2, 'Fairly fine, possible showers early'),
+        (1000, 12, 45, 2, 'Fairly fine, possible showers early'),
+        (1000, 12, 90, 2, 'Showery early, improving'),
+        (1000, 12, 135, 2, 'Showery early, improving'),
+        (1006, 12, 190, -1, 'Rain at times, very unsettled'),
     ]
 )
 def test_calc_zambretti_code(pressure, month, wind_dir, trend, expected_zambretti_text):
+    """
+
+    :param pressure:
+    :param month:
+    :param wind_dir: degrees
+    :param trend: mBar per hour
+    :param expected_zambretti_text:
+    :return:
+    """
     zambretti_code = zambretti.calc_zambretti_code(pressure, month, wind_dir, trend)
     zambretti_text = zambretti.calc_zambretti_text(zambretti_code)
 

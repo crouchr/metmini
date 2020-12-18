@@ -1,3 +1,4 @@
+import windrose
 
 def _(msg): return msg
 
@@ -35,7 +36,7 @@ forecast_text = {
 # Hard-code to Northern Hemisphere
 # wind is wind_dir
 # test against http://www.beteljuice.co.uk/zambretti/forecast.html
-def calc_zambretti_code(pressure, month, wind, trend):
+def calc_zambretti_code(pressure, month, wind_dir, trend):
     """
     Simple implementation of Zambretti forecaster algorithm.
     Inspired by beteljuice.com Java algorithm, as converted to Python by
@@ -44,7 +45,7 @@ def calc_zambretti_code(pressure, month, wind, trend):
 
     :param pressure:
     :param month:
-    :param wind:
+    :param wind_dir: degrees
     :param trend:
     :return:
     """
@@ -52,6 +53,9 @@ def calc_zambretti_code(pressure, month, wind, trend):
     north = True        # Northern Hemisphere
     baro_top = 1050.0
     baro_bottom = 950.0
+
+    # Convert wind_dir (degrees) to wind (wind_rose_id)
+    wind,_ = windrose.get_wind_rose(wind_dir)
 
     # normalise pressure
     pressure = 950.0 + ((1050.0 - 950.0) *
