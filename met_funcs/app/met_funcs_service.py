@@ -59,4 +59,4 @@ def wind_deg_to_quadrant_api():
 
 
 if __name__ == '__main__':
-    app.run(port=6000)
+    app.run(port=9500)

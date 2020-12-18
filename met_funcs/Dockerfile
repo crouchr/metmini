@@ -11,7 +11,7 @@ RUN mkdir /app
 COPY app/*.py /app/
 WORKDIR /app
 
-EXPOSE 6000
+EXPOSE 9500
 
 CMD ["python3", "met_funcs_service.py"]
 
