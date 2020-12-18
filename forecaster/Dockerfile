@@ -1,6 +1,6 @@
 FROM python:3.8.6-buster
 LABEL author="Richard Crouch"
-LABEL description="Zambretti Weather Forecast microservice"
+LABEL description="Weather Forecast microservice"
 
 # Prerequisites
 COPY requirements.txt /tmp
@@ -11,7 +11,7 @@ RUN mkdir /app
 COPY app/*.py /app/
 WORKDIR /app
 
-EXPOSE 6000
+EXPOSE 6001
 
-CMD ["python3", "zambretti-service.py"]
+CMD ["python3", "forecaster_service.py"]
 

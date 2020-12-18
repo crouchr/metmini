@@ -1,5 +1,8 @@
+# microservice for various meterological forecasting functions
+
 from flask import Flask, jsonify, request
 import zambretti
+import hughes38
 
 app = Flask(__name__)
 
@@ -23,7 +26,7 @@ def status():
 
 
 @app.route('/get_zambretti_forecast')
-def get_zambretti_forecast():
+def get_zambretti_forecast_api():
     answer = {}
 
     pressure = int(request.args.get('pressure', None))
