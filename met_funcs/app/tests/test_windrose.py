@@ -7,7 +7,7 @@ import windrose
 
 # ----------
 @pytest.mark.parametrize(
-    "wind_dir, expected_wind_rose_id, expected_wind_rose",
+    "wind_deg, expected_wind_rose_id, expected_wind_rose",
     [
         (-1, None, None),
         (0, 0, 'N'),
@@ -22,8 +22,8 @@ import windrose
         (315, 14, 'NW'),
     ]
 )
-def test_get_wind_rose(wind_dir, expected_wind_rose_id, expected_wind_rose):
-    wind_rose_id, wind_rose = windrose.get_wind_rose(wind_dir)
+def test_get_wind_rose(wind_deg, expected_wind_rose_id, expected_wind_rose):
+    wind_rose_id, wind_rose = windrose.get_wind_rose(wind_deg)
 
     assert wind_rose_id == expected_wind_rose_id
     assert wind_rose == expected_wind_rose
