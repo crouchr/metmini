@@ -1,4 +1,5 @@
-import windrose
+import requests
+import json
 
 def _(msg): return msg
 
@@ -36,7 +37,7 @@ forecast_text = {
 # Hard-code to Northern Hemisphere
 # wind is wind_dir
 # test against http://www.beteljuice.co.uk/zambretti/forecast.html
-def calc_zambretti_code(pressure, month, wind_deg, trend):
+def calc_zambretti_code(pressure, month_id, wind_deg, trend):
     """
     Simple implementation of Zambretti forecaster algorithm.
     Inspired by beteljuice.com Java algorithm, as converted to Python by
@@ -54,8 +55,14 @@ def calc_zambretti_code(pressure, month, wind_deg, trend):
     baro_top = 1050.0
     baro_bottom = 950.0
 
-    # Convert wind_dir (degrees) to wind (wind_rose_id)
-    wind,_ = windrose.get_wind_rose(wind_deg)
+    # Rest call to met_funcs microservice
+    query = {'wind_deg': wind_deg}
+    response = requests.get('http://0.0.0.0:9500/wind_deg_to_wind_rose', params=query)
+    if response.status_code != 200:
+        return None
+
+    response_dict = json.loads(response.content.decode('utf-8'))
+    wind = response_dict['wind_rose_id']
 
     # normalise pressure
     pressure = 950.0 + ((1050.0 - 950.0) *
@@ -70,14 +77,14 @@ def calc_zambretti_code(pressure, month, wind_deg, trend):
     # compute base forecast from pressure and trend (hPa / hour)
     if trend >= 0.1:
         # rising pressure
-        if north == (month >= 4 and month <= 9):
+        if north == (month_id >= 4 and month_id <= 9):
             pressure += 3.2
         F = 0.1740 * (1031.40 - pressure)
         LUT = ('A', 'B', 'B', 'C', 'F', 'G', 'I', 'J', 'L', 'M', 'M', 'Q', 'T',
                'Y')
     elif trend <= -0.1:
         # falling pressure
-        if north == (month >= 4 and month <= 9):
+        if north == (month_id >= 4 and month_id <= 9):
             pressure -= 3.2
         F = 0.1553 * (1029.95 - pressure)
         LUT = ('B', 'D', 'H', 'O', 'R', 'U', 'V', 'X', 'X', 'Z')
