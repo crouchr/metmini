@@ -1,5 +1,6 @@
 import requests
 import json
+import call_rest_api
 
 def _(msg): return msg
 
@@ -57,11 +58,9 @@ def calc_zambretti_code(pressure, month_id, wind_deg, trend):
 
     # Rest call to met_funcs microservice
     query = {'wind_deg': wind_deg}
-    response = requests.get('http://0.0.0.0:9500/wind_deg_to_wind_rose', params=query)
-    if response.status_code != 200:
+    response_dict = call_rest_api.call_rest_api('http://127.0.0.1:9500/wind_deg_to_wind_rose', query)
+    if response_dict is None:
         return None
-
-    response_dict = json.loads(response.content.decode('utf-8'))
     wind = response_dict['wind_rose_id']
 
     # normalise pressure
