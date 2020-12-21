@@ -1,0 +1,8 @@
+---
+- hosts: metmini-cicd
+  become: yes
+  tasks:
+    - name: Install MariaDB
+      yum: name=mariadb-server state=present
+    - name: Configure MariaDB
+      script: configure_mariadb_cicd.sh

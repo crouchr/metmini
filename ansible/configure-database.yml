@@ -1,6 +1,0 @@
----
-- hosts: cicd-metmini
-  become: yes
-  tasks:
-    name: Install MariaDB
-    yum: name=mariadb-server state=present
