@@ -5,13 +5,13 @@
 # FIXME - the ordering in here needs fixing before this script can be use in an automation pipeline
 
 mysql -u root <<MYSQL_SCRIPT
-CREATE USER 'metmini'@mrdell.localdomain identified by 'metmini';
+CREATE USER 'metmini'@metmini-cicd.localdomain identified by 'metmini';
 CREATE USER 'grafanaReader' IDENTIFIED BY 'grafanasecret';
 CREATE DATABASE metminidb;
 GRANT SELECT ON metminidb.actual TO 'grafanaReader';
 GRANT ALL ON metminidb.* to 'metmini' identified by 'metmini';
 FLUSH PRIVILEGES;
-SHOW GRANTS FOR 'metmini'@mrdell.localdomain;
+SHOW GRANTS FOR 'metmini'@metmini-cicd.localdomain;
 MYSQL_SCRIPT
 
 mysql -u root <<MYSQL_SCRIPT
