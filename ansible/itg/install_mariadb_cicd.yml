@@ -1,0 +1,6 @@
+---
+- hosts: metmini-itg
+  become: yes
+  tasks:
+    - name: Install MariaDB package(s)
+      yum: name=mariadb-server state=present
