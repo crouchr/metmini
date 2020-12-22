@@ -6,7 +6,7 @@
       yum: name=mariadb-server state=present
 
     - name: Install Python Setup Tools
-      yum: name=python-setuptool state=present
+      yum: name=python-setuptools state=present
 
     - name: Install Ansible mysql_user module dependencies
       pip:
