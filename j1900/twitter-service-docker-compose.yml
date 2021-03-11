@@ -1,0 +1,19 @@
+# This runs on the Docker Host
+
+version: '3'
+
+services:
+  twitter-service:
+    container_name: twitter-service
+    image: registry:5000/twitter-service:1.0.4
+    logging:
+      driver: syslog
+      options:
+        tag: "twitter-service"
+    environment:
+      STAGE: PRD
+      VERSION: 1.0.4
+    ports:
+      - "9506:9506"
+    volumes:
+      -  "/data/metminiwx/media:/data/metminiwx/media:rw"

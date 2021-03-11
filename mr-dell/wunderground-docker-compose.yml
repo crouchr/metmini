@@ -1,0 +1,19 @@
+# This runs on the Docker Host
+
+version: '3'
+
+services:
+  wunderground:
+    container_name: wunderground
+    image: registry:5000/wunderground:1.0.5
+    logging:
+      driver: syslog
+      options:
+        tag: wunderground
+    environment:
+      STAGE: PRD
+      VERSION: 1.0.5
+    volumes:  
+      - type: bind
+        source: /data
+        target: /data

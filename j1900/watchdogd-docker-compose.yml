@@ -1,0 +1,19 @@
+# This runs on the Docker Host
+
+version: '3'
+
+services:
+  watchdogd:
+    container_name: watchdogd
+    image: registry:5000/watchdogd:1.0.4
+    logging:
+      driver: syslog
+      options:
+        tag: watchdogd
+    environment:
+      STAGE: PRD
+      VERSION: 1.0.4
+      POLL_SECS: 60
+    devices:
+      - dev/snd:dev/snd
+  

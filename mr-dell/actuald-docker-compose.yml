@@ -1,0 +1,24 @@
+# This runs on the Docker Host
+version: "3.9"
+
+services:
+  actuald:
+    container_name: actuald
+    image: registry:5000/actuald:1.1.5
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "syslog"
+      options:
+        tag: "actuald"
+    environment:
+      SQL_DB_HOSTNAME: 192.168.1.180
+      STAGE: PRD
+      VERSION: 1.1.5
+    volumes:
+      -  "/data/metminiwx:/data/metminiwx:rw"
+

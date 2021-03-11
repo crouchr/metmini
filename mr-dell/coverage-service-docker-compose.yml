@@ -1,0 +1,21 @@
+# This runs on the Docker Host
+
+version: '3'
+
+services:
+  coverage-service:
+    container_name: coverage-service
+    image: registry:5000/coverage-service:1.0.5
+    logging:
+      driver: syslog
+      options:
+        tag: "coverage-service"
+    environment:
+      STAGE: PRD
+      VERSION: 1.0.5
+    ports:
+      - "9502:9502"
+    volumes:  
+      - type: bind
+        source: /data
+        target: /data

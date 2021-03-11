@@ -1,0 +1,25 @@
+# This runs on the Docker Host
+
+version: '3'
+
+services:
+  cumulusmx:
+    container_name: cumulusmx
+    image: registry:5000/cumulusmx:1.0.3
+    logging:
+      driver: syslog
+      options:
+        tag: cumulusmx
+    environment:
+      STAGE: PRD
+      VERSION: 1.0.3
+    ports:
+      - "8998:8998"
+      - "8080:80"
+    devices:
+      - dev/hidraw0:dev/hidraw0  
+    volumes:
+      - "/data/metminiwx/cumulusmx/data:/opt/MXWeather/data"
+      - "/data/metminiwx/cumulusmx/backup:/opt/MXWeather/backup"
+      - "/data/metminiwx/cumulusmx/log:/var/log/nginx"
+      - "/data/metminiwx/cumulusmx/Cumulus.ini:/opt/CumulusMX/Cumulus.ini"

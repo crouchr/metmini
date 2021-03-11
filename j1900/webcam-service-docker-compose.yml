@@ -1,0 +1,21 @@
+# This runs on the Docker Host
+
+version: '3'
+
+services:
+  webcam-service:
+    container_name: webcam-service
+    image: registry:5000/webcam-service:1.0.15
+    logging:
+      driver: syslog
+      options:
+        tag: "webcam-service"      
+    environment:
+      STAGE: PRD
+      VERSION: 1.0.15
+    devices:
+      - /dev/video0:/dev/video0
+    ports:
+      - "9504:9504"
+    volumes:
+      -  "/data/metminiwx/media:/data/metminiwx/media:rw"

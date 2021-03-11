@@ -1,0 +1,19 @@
+# This runs on the Docker Host
+
+version: '3'
+
+services:
+  light-service:
+    container_name: light-service
+    image: registry:5000/light-service:1.0.18
+    logging:
+      driver: syslog
+      options:
+        tag: "light-service"
+    environment:
+      STAGE: PRD
+      VERSION: 1.0.18
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    ports:
+      - "9503:9503"

@@ -1,0 +1,22 @@
+# This runs on the Docker Host
+
+version: '3'
+
+services:
+  webcamd:
+    container_name: webcamd
+    image: registry:5000/webcamd:1.0.23
+    logging:
+      driver: syslog
+      options:
+        tag: "webcamd"      
+    environment:
+      STAGE: PRD
+      VERSION: 1.0.23
+      VIDEO_SECS: 20
+      PREAMBLE_SECS: 5
+      MINS_BETWEEN_VIDEOS: 30
+      MIN_SOLAR: 10
+      MAX_SOLAR: 180
+      
+      

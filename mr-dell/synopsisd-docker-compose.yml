@@ -1,0 +1,17 @@
+# This runs on the Docker Host
+
+version: '3'
+
+services:
+  synopsisd:
+    container_name: synopsisd
+    image: registry:5000/synopsisd:1.0.13
+    logging:
+      driver: syslog
+      options:
+        tag: synopsisd
+    environment:
+      STAGE: PRD
+      VERSION: 1.0.13
+    volumes:
+      - "/data/metminiwx/synopsis:/data/metminiwx/synopsis"

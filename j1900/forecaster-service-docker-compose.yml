@@ -1,0 +1,16 @@
+# This runs on the Docker Host
+
+version: '3'
+
+services:
+  forecaster-service:
+    container_name: forecaster-service
+    image: registry:5000/forecaster-service:1.0.7
+    logging:
+      driver: syslog
+      options:
+        tag: "forecaster-service"
+    environment:
+      STAGE: PRD
+    ports:
+      - "9501:9501"
