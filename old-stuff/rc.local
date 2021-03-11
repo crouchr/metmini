@@ -1,0 +1,134 @@
+#!/bin/sh
+#
+# /etc/rc.d/rc.local:  Local system initialization script.
+#
+# Put any local startup commands in here.  Also, if you have
+# anything that needs to be run at shutdown time you can
+# make an /etc/rc.d/rc.local_shutdown script and put those
+# commands in there.
+echo " "
+echo "Entered rc.local"
+
+# make sure arp is good for Papertrail
+ping logs2.papertrailapp.com -c 5
+
+echo 'start InfluxDB database...'
+if [ -x /etc/rc.d/rc.influxdb ]; then
+   /etc/rc.d/rc.influxdb start
+fi
+sleep 10
+
+echo 'start Telegraf agent...'
+if [ -x /etc/rc.d/rc.telegraf ]; then
+   /etc/rc.d/rc.telegraf start
+fi
+
+echo 'start Docker...'
+if [ -x /etc/rc.d/rc.local ]; then
+   /etc/rc.d/rc.docker start
+fi
+sleep 30
+
+echo 'start MetMiniWX Misc Service container...'
+/usr/bin/docker-compose -f /etc/metminimisc-service-docker-compose.yml up &
+sleep 10
+
+echo 'start MetMinWX Forecaster Service container...'
+/usr/bin/docker-compose -f /etc/forecaster-service-docker-compose.yml up &
+sleep 10
+
+echo 'start MetMiniWX Light Service container...'
+/usr/bin/docker-compose -f /etc/light-service-docker-compose.yml up &
+sleep 10
+
+echo 'start MetMiniWX Twitter Service container...'
+/usr/bin/docker-compose -f /etc/twitter-service-docker-compose.yml up &
+sleep 10
+
+echo 'start MetMiniWX WebCam Service container...'
+/usr/bin/docker-compose -f /etc/webcam-service-docker-compose.yml up &
+sleep 10
+
+echo 'start MetMinWX (Cloud) Coverage Service container...'
+/usr/bin/docker-compose -f /etc/coverage-service-docker-compose.yml up &
+sleep 10
+
+echo 'start MetMiniWX Actuald container...'
+/usr/bin/docker-compose -f /etc/actuald-docker-compose.yml up &
+sleep 10
+
+# run up the Wunderground connector container - currently superceded by CumumlusMX
+##/usr/bin/docker-compose -f /etc/wunderground-docker-compose.yml up &
+##sleep 10
+
+echo 'start MetMiniWX CumulusMX container...'
+/usr/bin/docker-compose -f /etc/cumulusmx-docker-compose.yml up &
+sleep 15
+
+echo 'start MetMiniWX Cloudmetricsd container...'
+/usr/bin/docker-compose -f /etc/cloudmetricsd-docker-compose.yml up &
+sleep 10
+
+#echo 'start MetMiniWX Webcamd container...'
+#/usr/bin/docker-compose -f /etc/webcamd-docker-compose.yml up &
+#sleep 10
+
+##echo 'start MetMinWX Predictord container...'
+##/usr/bin/docker-compose -f /etc/predictord-docker-compose.yml up &
+##sleep 10
+
+echo 'start Portainer container...' 		#- add to docker-compose.yml
+docker rm portainer
+/usr/bin/docker run -d -p 9999:9000 --name portainer -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer -H unix:///var/run/docker.sock
+sleep 10
+
+echo 'start MetMiniWX Watchdogd container...'
+/usr/bin/docker-compose -f /etc/watchdogd-docker-compose.yml up &
+sleep 10
+
+# ---------------------------------
+
+#ifconfig br0 up
+#echo "Add a host route to selected hosts..."
+
+# access to mysql (argus data)
+#ip route add 192.168.1.42/32 via 192.168.10.1
+
+# access to seconion (Wazuh agent)
+#ip route add 192.168.1.45/32 via 192.168.10.1
+
+# access RBN for DNS and download malware test
+#ip route add 192.168.1.99/32 via 192.168.10.1
+
+# access XW6600 so I can ssh into mrdell from xw6600 workstation
+#ip route add 192.168.1.15/32 via 192.168.10.1
+#sleep 3
+
+#echo "Test connection to local servers..."
+#ping 192.168.1.15 -c 5
+#ping 192.168.1.42 -c 5
+#ping 192.168.1.45 -c 5
+#ping 192.168.1.99 -c 5
+
+# Netflow probe
+# need to add filter -f or external netflow collector gets all flows not just honeypot ones
+# Investigate softflowd - it does netflow v9 and IPv6
+# todo - tune timeouts
+# todo - get -u parameter to work
+# issue with this running on same ports as node7 ?
+# -e 60 : active timout 60 seconds
+# -x 10 : snmp index - allow to test against outIf=0 for drops on real netflow source to be valid
+#echo "[+] Run up fprobe netflow probe and send to nfsen VM"
+#/usr/local/sbin/fprobe -i eth0 -fip -e 300 -x 10 192.168.1.42:9995
+
+#echo "[+] Run up argus session probe and send to mysql VM"
+#/usr/sbin/argus -d -A -B 192.168.10.5 -P 1651 -R -u crouchr -g users -U 256 -w /nsm/argus/argus3.test.arg -Z -i eth0 - ip and src 192.168.1.117
+#sleep 5
+
+# OSSEC : added by wazuh during installation
+#echo " "
+#if [ -x /etc/rc.d/rc.wazuh-agent ]; then
+#      /etc/rc.d/rc.wazuh-agent start
+#fi
+
+echo "Exit rc.local"
