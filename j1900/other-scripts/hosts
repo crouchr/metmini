@@ -14,9 +14,9 @@
 
 # For loopbacking.
 127.0.0.1		    localhost
-192.168.1.180		mrdell.ermin.lan mrdell docker-prd
-
 192.168.1.8		    j1900.ermin.lab j1900
+
+192.168.1.180		mrdell.ermin.lan mrdell docker-prd
 192.168.1.102       web.ermin.lan web
 192.168.1.109		registry.ermin.lan registry
 

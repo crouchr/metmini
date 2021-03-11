@@ -6,6 +6,7 @@
 # anything that needs to be run at shutdown time you can
 # make an /etc/rc.d/rc.local_shutdown script and put those
 # commands in there.
+
 echo " "
 echo "Entered rc.local"
 
@@ -27,63 +28,4 @@ echo 'start Docker...'
 if [ -x /etc/rc.d/rc.local ]; then
    /etc/rc.d/rc.docker start
 fi
-sleep 30
-
-echo 'start MetMiniWX Misc Service container...'
-/usr/bin/docker-compose -f /etc/metminimisc-service-docker-compose.yml up &
 sleep 10
-
-echo 'start MetMinWX Forecaster Service container...'
-/usr/bin/docker-compose -f /etc/forecaster-service-docker-compose.yml up &
-sleep 10
-
-echo 'start MetMiniWX Light Service container...'
-/usr/bin/docker-compose -f /etc/light-service-docker-compose.yml up &
-sleep 10
-
-echo 'start MetMiniWX Twitter Service container...'
-/usr/bin/docker-compose -f /etc/twitter-service-docker-compose.yml up &
-sleep 10
-
-echo 'start MetMiniWX WebCam Service container...'
-/usr/bin/docker-compose -f /etc/webcam-service-docker-compose.yml up &
-sleep 10
-
-echo 'start MetMinWX (Cloud) Coverage Service container...'
-/usr/bin/docker-compose -f /etc/coverage-service-docker-compose.yml up &
-sleep 10
-
-echo 'start MetMiniWX Actuald container...'
-/usr/bin/docker-compose -f /etc/actuald-docker-compose.yml up &
-sleep 10
-
-# run up the Wunderground connector container - currently superceded by CumumlusMX
-##/usr/bin/docker-compose -f /etc/wunderground-docker-compose.yml up &
-##sleep 10
-
-echo 'start MetMiniWX CumulusMX container...'
-/usr/bin/docker-compose -f /etc/cumulusmx-docker-compose.yml up &
-sleep 15
-
-echo 'start MetMiniWX Cloudmetricsd container...'
-/usr/bin/docker-compose -f /etc/cloudmetricsd-docker-compose.yml up &
-sleep 10
-
-#echo 'start MetMiniWX Webcamd container...'
-#/usr/bin/docker-compose -f /etc/webcamd-docker-compose.yml up &
-#sleep 10
-
-##echo 'start MetMinWX Predictord container...'
-##/usr/bin/docker-compose -f /etc/predictord-docker-compose.yml up &
-##sleep 10
-
-echo 'start Portainer container...' 		#- add to docker-compose.yml
-docker rm portainer
-/usr/bin/docker run -d -p 9999:9000 --name portainer -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer -H unix:///var/run/docker.sock
-sleep 10
-
-echo 'start MetMiniWX Watchdogd container...'
-/usr/bin/docker-compose -f /etc/watchdogd-docker-compose.yml up &
-sleep 10
-
-echo "Exit rc.local"

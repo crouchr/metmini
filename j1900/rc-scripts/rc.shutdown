@@ -1,0 +1,3 @@
+if [ -x /etc/rc.d/rc.docker ]; then
+  /etc/rc.d/rc.docker stop
+fi
